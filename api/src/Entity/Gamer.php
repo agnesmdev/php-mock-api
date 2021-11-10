@@ -3,12 +3,13 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource]
-
 class Gamer
 {
 
@@ -31,6 +32,15 @@ class Gamer
     #[ORM\Column(type: 'integer', nullable: true)]
     #[Assert\GreaterThan(10)]
     public ?int $age = null;
+
+    #[ORM\OneToMany(mappedBy: 'gamer', targetEntity: 'Review', cascade: ['persist', 'remove'])]
+    public iterable $reviews;
+
+    #[Pure]
+    public function __construct()
+    {
+        $this->reviews = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {

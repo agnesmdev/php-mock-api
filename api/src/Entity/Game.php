@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -30,6 +32,15 @@ class Game
     #[ORM\ManyToOne(targetEntity: 'Console', inversedBy: 'games')]
     #[Assert\NotNull]
     public ?Console $console = null;
+
+    #[ORM\OneToMany(mappedBy: 'game', targetEntity: 'Review', cascade: ['persist', 'remove'])]
+    public iterable $reviews;
+
+    #[Pure]
+    public function __construct()
+    {
+        $this->reviews = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
