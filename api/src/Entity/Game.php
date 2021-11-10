@@ -3,16 +3,14 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource]
-class Console
+class Game
 {
 
     #[ORM\Id]
@@ -29,14 +27,9 @@ class Console
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     public ?\DateTimeInterface $launchDate = null;
 
-    #[ORM\OneToMany(mappedBy: 'console', targetEntity: 'Game', cascade: ['persist', 'remove'])]
-    public iterable $games;
-
-    #[Pure]
-    public function __construct()
-    {
-        $this->games = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(targetEntity: 'Console', inversedBy: 'games')]
+    #[Assert\NotNull]
+    public ?Console $console = null;
 
     public function getId(): ?int
     {
