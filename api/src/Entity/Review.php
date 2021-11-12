@@ -9,8 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[UniqueEntity(
-    fields: ['game', 'gamer'],
-    message: 'This gamer has already done a review of this game'
+    fields: ['game', 'player'],
+    message: 'This player has already done a review of this game'
 )]
 #[ApiResource]
 class Review
@@ -26,16 +26,16 @@ class Review
     public int $gameTime = 0;
 
     #[ORM\Column(type: 'decimal', precision: 3, scale: 1)]
-    #[Assert\NotNull]
+    #[Assert\NotBlank]
     public string $note;
 
     #[ORM\Column(type: 'text', nullable: true)]
     #[Assert\Length(min: 300, max: 3000)]
     public ?string $comment;
 
-    #[ORM\ManyToOne(targetEntity: 'Gamer', inversedBy: 'reviews')]
+    #[ORM\ManyToOne(targetEntity: 'Player', inversedBy: 'reviews')]
     #[Assert\NotNull]
-    public ?Gamer $gamer = null;
+    public ?Player $player = null;
 
     #[ORM\ManyToOne(targetEntity: 'Game', inversedBy: 'reviews')]
     #[Assert\NotNull]

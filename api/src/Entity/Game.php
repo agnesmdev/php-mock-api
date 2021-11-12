@@ -21,7 +21,6 @@ class Game
     private ?int $id = null;
 
     #[ORM\Column(unique: true)]
-    #[Assert\NotNull]
     #[Assert\NotBlank]
     public string $name;
 

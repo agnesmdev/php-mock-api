@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource]
-class Gamer
+class Player
 {
 
     #[ORM\Id]
@@ -19,12 +19,10 @@ class Gamer
     private ?int $id = null;
 
     #[ORM\Column(unique: true)]
-    #[Assert\NotNull]
     #[Assert\NotBlank]
     public string $username;
 
     #[ORM\Column(unique: true)]
-    #[Assert\NotNull]
     #[Assert\NotBlank]
     #[Assert\Email]
     public string $email;
@@ -33,7 +31,7 @@ class Gamer
     #[Assert\GreaterThan(10)]
     public ?int $age = null;
 
-    #[ORM\OneToMany(mappedBy: 'gamer', targetEntity: 'Review', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'player', targetEntity: 'Review', cascade: ['persist', 'remove'])]
     public iterable $reviews;
 
     #[Pure]
