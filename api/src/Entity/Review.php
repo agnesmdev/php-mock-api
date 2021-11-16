@@ -12,7 +12,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     fields: ['game', 'player'],
     message: 'This player has already done a review of this game'
 )]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ['get', 'post'],
+    itemOperations: ['get', 'patch', 'delete']
+)]
 class Review
 {
 
