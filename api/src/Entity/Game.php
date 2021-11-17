@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,10 +29,12 @@ class Game
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['console:item'])]
     private ?int $id = null;
 
     #[ORM\Column(unique: true)]
     #[Assert\NotBlank]
+    #[Groups(['console:item'])]
     public string $name;
 
     #[ORM\Column(type: 'date')]
