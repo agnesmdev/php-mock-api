@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     collectionOperations: ['get', 'post'],
     itemOperations: [
         'get' => [
-            'normalizationContext' => ['groups' => ['console:item']]
+            'normalization_context' => ['groups' => ['console:item']]
         ],
         'patch',
         'delete'
