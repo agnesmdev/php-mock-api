@@ -22,6 +22,7 @@
 bin/*
 !bin/console
 build/
+config/jwt/
 docker/db/data/
 helm/
 public/bundles/

@@ -14,19 +14,31 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource(
-    collectionOperations: ['get', 'post'],
+    collectionOperations: [
+        'get',
+        'post' => [
+            "security" => "is_granted('ROLE_ADMIN')"
+        ]
+    ],
     itemOperations: [
         'get' => [
             'normalization_context' => ['groups' => ['console:item']]
         ],
-        'patch',
-        'delete'
+        'patch' => [
+            "security" => "is_granted('ROLE_ADMIN')"
+        ],
+        'delete' => [
+            "security" => "is_granted('ROLE_ADMIN')"
+        ]
     ],
     subresourceOperations: [
         'api_games_console_get_subresource' => [
             'method' => 'GET',
             'path' => '/consoles/{id}/games'
         ]
+    ],
+    attributes: [
+        "security" => "is_granted('ROLE_USER')"
     ],
     normalizationContext: ['groups' => ['console:all']]
 )]

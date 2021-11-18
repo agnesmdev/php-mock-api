@@ -11,20 +11,33 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource(
-    collectionOperations: ['get', 'post'],
+    collectionOperations: [
+        'get' => [
+            'normalization_context' => ['groups' => ['player:all']],
+            "security" => "is_granted('ROLE_USER')"
+        ],
+        'post'
+    ],
     itemOperations: [
         'get' => [
-            'normalization_context' => ['groups' => ['player:item']]
+            'normalization_context' => ['groups' => ['player:item']],
+            "security" => "is_granted('ROLE_USER')"
         ],
-        'patch',
+        'patch' => [
+            "security" => "is_granted('ROLE_USER') and object.email == user.getUsername()"
+        ],
         'delete'
     ],
     subresourceOperations: [
         'api_reviews_player_get_subresource' => [
             'method' => 'GET',
             'path' => '/players/{id}/reviews',
-            'normalization_context' => ['groups' => ['review:player']]
+            'normalization_context' => ['groups' => ['review:player']],
+            "security" => "is_granted('ROLE_USER') and object.email == user.getEmail"
         ]
+    ],
+    attributes: [
+        "security" => "is_granted('ROLE_ADMIN')"
     ]
 )]
 class Player
