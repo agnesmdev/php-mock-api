@@ -36,17 +36,17 @@ class Console
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['console:item', 'console:all'])]
+    #[Groups(['console:item', 'console:all', 'game:item', 'game:all'])]
     private ?int $id = null;
 
     #[ORM\Column(unique: true)]
     #[Assert\NotBlank]
-    #[Groups(['console:item', 'console:all'])]
+    #[Groups(['console:item', 'console:all', 'game:item', 'game:all'])]
     public string $name;
 
     #[ORM\Column(type: 'date')]
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
-    #[Groups('console:item')]
+    #[Groups(['console:item', 'console:all'])]
     public ?\DateTimeInterface $launchDate = null;
 
     #[ORM\OneToMany(mappedBy: 'console', targetEntity: 'Game', cascade: ['persist', 'remove'])]

@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
@@ -15,13 +14,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 #[ApiResource(
     collectionOperations: ['get', 'post'],
-    itemOperations: ['get', 'patch', 'delete'],
+    itemOperations: [
+        'get' => [
+            'normalization_context' => ['groups' => ['game:item']]
+        ],
+        'patch',
+        'delete'
+    ],
     subresourceOperations: [
         'api_reviews_game_get_subresource' => [
             'method' => 'GET',
             'path' => '/games/{id}/reviews'
         ]
-    ]
+    ],
+    normalizationContext: ['groups' => ['game:all']]
 )]
 class Game
 {
@@ -29,24 +35,26 @@ class Game
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['console:item'])]
+    #[Groups(['console:item', 'game:item', 'game:all', 'review:item'])]
     private ?int $id = null;
 
     #[ORM\Column(unique: true)]
     #[Assert\NotBlank]
-    #[Groups(['console:item'])]
+    #[Groups(['console:item', 'game:item', 'game:all', 'review:item'])]
     public string $name;
 
     #[ORM\Column(type: 'date')]
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
+    #[Groups(['console:item', 'game:item', 'game:all'])]
     public ?\DateTimeInterface $launchDate = null;
 
     #[ORM\ManyToOne(targetEntity: 'Console', inversedBy: 'games')]
     #[Assert\NotNull]
+    #[Groups(['game:item', 'game:all'])]
     public ?Console $console = null;
 
     #[ORM\OneToMany(mappedBy: 'game', targetEntity: 'Review', cascade: ['persist', 'remove'])]
-    #[ApiSubresource(maxDepth: 1)]
+    #[Groups(['game:item'])]
     public iterable $reviews;
 
     #[Pure]
